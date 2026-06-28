@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "copy++ Browser",
+  "version": "1.0.0",
+  "description": "Adds copy++ to Chrome/Edge context menu and supports multi-copy paste inside browser pages.",
+  "permissions": ["contextMenus", "storage", "activeTab", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "commands": {
+    "copy-plus-plus-save": {
+      "suggested_key": { "default": "Ctrl+Shift+C" },
+      "description": "Save selected text to copy++"
+    },
+    "copy-plus-plus-paste": {
+      "suggested_key": { "default": "Ctrl+Shift+V" },
+      "description": "Paste all copy++ items"
+    }
+  }
+}
