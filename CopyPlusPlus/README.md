@@ -1,12 +1,14 @@
 # WpfMultiCopyClipboard / copy++
 
-A WPF clipboard manager sample with Windows shell integration and a browser extension.
+A WPF clipboard manager with Windows shell integration and a browser extension.
 
 ## Features
 
 - Press **Ctrl+C+C** to add the current selected clipboard content to the WPF app list.
 - Press **Ctrl+V+V** to paste all saved WPF items together.
-- Supports text, file paths, and single image clipboard content.
+- Right-click inside the WPF app to paste all items, paste one of the 15 newest copied items, or delete a saved item.
+- Supports text, file paths, and image clipboard content.
+- Writes images with Bitmap, DIB, PNG, and HTML clipboard formats for better paste behavior in Word, Paint, and other apps.
 - Adds a Windows context menu item named **copy++** to:
   - Desktop background right-click menu
   - Folder background right-click menu
@@ -21,11 +23,31 @@ The right-click menu inside apps such as Notepad, Word, Chrome, Edge, Visual Stu
 
 For browsers, use the included extension in `BrowserExtensionChromeEdge`.
 
+## Create Setup
+
+Run:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\BuildSetup.ps1
+```
+
+The setup file is created at:
+
+```text
+dist\CopyPlusPlusSetup.exe
+```
+
+Running the setup installs copy++ to:
+
+```text
+%LOCALAPPDATA%\Programs\CopyPlusPlus
+```
+
+It also registers the desktop, folder, and file context menus, adds copy++ to Windows startup, and starts the app minimized without a success dialog.
+
 ## Build WPF app
 
-Open `WpfMultiCopyClipboard.csproj` in Visual Studio and build/publish it.
-
-Example publish command:
+Open `WpfMultiCopyClipboard.csproj` in Visual Studio and build/publish it, or run:
 
 ```bat
 dotnet publish -c Release -r win-x64 --self-contained false
@@ -37,12 +59,11 @@ Output folder example:
 bin\Release\net8.0-windows\win-x64\publish
 ```
 
-## Install the Windows context menu item
+## Install the Windows context menu item manually
 
-After publishing, copy these two files into the same folder as `WpfMultiCopyClipboard.exe`:
+After publishing, run this file from the same folder as `WpfMultiCopyClipboard.exe`:
 
 - `InstallCopyPlusPlusContextMenu.bat`
-- `UninstallCopyPlusPlusContextMenu.bat`
 
 Then double-click:
 
@@ -70,6 +91,7 @@ After installing, the browser right-click menu will show:
 - **copy++ - Save selected text**
 - **copy++ - Save image URL**
 - **copy++ - Paste all saved items**
+- **copy++ - Paste** with the 15 newest saved browser items, read-only hover previews, and per-item delete
 - **copy++ - Clear saved items**
 
 Browser shortcut keys:

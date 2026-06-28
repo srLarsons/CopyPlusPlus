@@ -13,6 +13,8 @@ public enum ClipboardItemKind
 
 public sealed class ClipboardItem
 {
+    private const int PreviewLength = 120;
+
     public ClipboardItemKind Kind { get; init; }
     public string Title { get; init; } = "Clipboard item";
     public string Preview { get; init; } = "";
@@ -29,7 +31,7 @@ public sealed class ClipboardItem
             {
                 Kind = ClipboardItemKind.Text,
                 Title = "Text",
-                Preview = text.Length > 120 ? text[..120] + "..." : text,
+                Preview = Truncate(text, PreviewLength),
                 Text = text
             };
         }
@@ -37,6 +39,9 @@ public sealed class ClipboardItem
         if (System.Windows.Clipboard.ContainsImage())
         {
             BitmapSource image = System.Windows.Clipboard.GetImage();
+            if (image.CanFreeze)
+                image.Freeze();
+
             return new ClipboardItem
             {
                 Kind = ClipboardItemKind.Image,
@@ -62,7 +67,12 @@ public sealed class ClipboardItem
         {
             Kind = ClipboardItemKind.Unknown,
             Title = "Unknown format",
-            Preview = "This clipboard format is not supported by this sample."
+            Preview = "This clipboard format is not supported."
         };
+    }
+
+    private static string Truncate(string value, int maxLength)
+    {
+        return value.Length <= maxLength ? value : value[..(maxLength - 3)] + "...";
     }
 }

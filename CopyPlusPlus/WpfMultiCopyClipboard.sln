@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36915.13 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfMultiCopyClipboard", "WpfMultiCopyClipboard.csproj", "{4D8CFA77-F5D9-BB77-8AEC-C10F22C0150D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D8CFA77-F5D9-BB77-8AEC-C10F22C0150D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D8CFA77-F5D9-BB77-8AEC-C10F22C0150D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D8CFA77-F5D9-BB77-8AEC-C10F22C0150D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D8CFA77-F5D9-BB77-8AEC-C10F22C0150D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A81C6916-E746-4417-9072-E35EA2CCCDE4}
+	EndGlobalSection
+EndGlobal

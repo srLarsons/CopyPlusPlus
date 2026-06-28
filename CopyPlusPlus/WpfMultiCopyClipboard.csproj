@@ -5,5 +5,17 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>Assets\copyplusplus-logo.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\copyplusplus-logo.ico" />
+    <None Remove="Assets\copyplusplus-logo.png" />
+    <Resource Include="Assets\copyplusplus-logo.ico" />
+    <Resource Include="Assets\copyplusplus-logo.png" />
+    <Content Include="InstallCopyPlusPlusContextMenu.bat" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Always" />
+    <Content Include="UninstallCopyPlusPlusContextMenu.bat" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Always" />
+    <Content Include="BrowserExtensionChromeEdge\**\*" CopyToPublishDirectory="Always" />
+    <Content Include="BrowserExtensionChromeEdge.crx" CopyToPublishDirectory="Always" />
+  </ItemGroup>
 </Project>
