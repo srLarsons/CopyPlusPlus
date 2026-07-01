@@ -4,8 +4,8 @@ A WPF clipboard manager with Windows shell integration and a browser extension.
 
 ## Features
 
-- Press **Ctrl+C+C** to add the current selected clipboard content to the WPF app list.
-- Press **Ctrl+V+V** to paste all saved WPF items together.
+- Press **Ctrl+Alt+C** to add the current selected clipboard content to the WPF app list.
+- Press **Ctrl+Alt+V** to paste all saved WPF items together.
 - Right-click inside the WPF app to paste all items, paste one of the 15 newest copied items, or delete a saved item.
 - Supports text, file paths, and image clipboard content.
 - Writes images with Bitmap, DIB, PNG, and HTML clipboard formats for better paste behavior in Word, Paint, and other apps.
@@ -97,8 +97,8 @@ After installing, the browser right-click menu will show:
 Browser shortcut keys:
 
 ```text
-Ctrl+Shift+C = save selected browser text
-Ctrl+Shift+V = paste all saved browser items
+Ctrl+Alt+C = save selected browser text
+Ctrl+Alt+V = paste all saved browser items
 ```
 
 Chrome and Edge do not allow extensions to replace the built-in Copy/Paste menu items. The extension adds its own **copy++** items.

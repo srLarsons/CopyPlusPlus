@@ -33,7 +33,7 @@ public partial class App : Application
         if (HasArg(e.Args, "--help"))
         {
             MessageBox.Show(
-                "copy++ clipboard manager\n\nCtrl+C twice: save current selection\nCtrl+V twice: paste all saved items",
+                "copy++ clipboard manager\n\nCtrl+Alt+C: save current selection\nCtrl+Alt+V: paste all saved items",
                 "copy++");
             Shutdown();
             return;

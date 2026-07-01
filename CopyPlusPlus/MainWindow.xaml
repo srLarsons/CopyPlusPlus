@@ -37,7 +37,7 @@
             <StackPanel VerticalAlignment="Center">
                 <TextBlock FontSize="20" FontWeight="SemiBold" Text="Multi Copy Clipboard" />
                 <TextBlock Margin="0,6,0,0" TextWrapping="Wrap">
-                    Press Ctrl+C twice quickly to add the selected content to this list. Press Ctrl+V twice quickly to paste everything together.
+                    Press Ctrl+Alt+C to save the selected content. Press Ctrl+Alt+V to paste everything.
                 </TextBlock>
             </StackPanel>
         </DockPanel>

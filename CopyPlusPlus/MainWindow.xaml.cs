@@ -11,14 +11,11 @@ namespace WpfMultiCopyClipboard;
 public partial class MainWindow : Window
 {
     private const int CopyHotkeyId = 1;
-    private const int PasteHotkeyId = 2;
+    private const int PasteAllHotkeyId = 2;
     private const int MaxSavedItems = 100;
     private const int MaxPasteMenuItems = 15;
     private const int PreviewMaxVisibleLines = 5;
     private const double PreviewLineHeight = 18;
-    private readonly TimeSpan _doublePressWindow = TimeSpan.FromMilliseconds(650);
-    private DateTime _lastCopyPress = DateTime.MinValue;
-    private DateTime _lastPastePress = DateTime.MinValue;
     private HwndSource? _source;
 
     public ObservableCollection<ClipboardItem> Items { get; } = new();
@@ -37,15 +34,13 @@ public partial class MainWindow : Window
         _source = HwndSource.FromHwnd(handle);
         _source?.AddHook(WndProc);
 
-        RegisterHotkey(handle, CopyHotkeyId, NativeMethods.MOD_CONTROL, NativeMethods.KEY_C);
-        RegisterHotkey(handle, PasteHotkeyId, NativeMethods.MOD_CONTROL, NativeMethods.KEY_V);
+        RegisterAppHotkeys(handle);
     }
 
     protected override void OnClosed(EventArgs e)
     {
         IntPtr handle = new WindowInteropHelper(this).Handle;
-        NativeMethods.UnregisterHotKey(handle, CopyHotkeyId);
-        NativeMethods.UnregisterHotKey(handle, PasteHotkeyId);
+        UnregisterAppHotkeys(handle);
         _source?.RemoveHook(WndProc);
         base.OnClosed(e);
     }
@@ -67,9 +62,9 @@ public partial class MainWindow : Window
             HandleCopyHotkey();
             handled = true;
         }
-        else if (id == PasteHotkeyId)
+        else if (id == PasteAllHotkeyId)
         {
-            HandlePasteHotkey();
+            HandlePasteAllHotkey();
             handled = true;
         }
 
@@ -78,40 +73,23 @@ public partial class MainWindow : Window
 
     private void HandleCopyHotkey()
     {
-        DateTime now = DateTime.Now;
-        bool isDoublePress = now - _lastCopyPress <= _doublePressWindow;
-        _lastCopyPress = now;
-
-        TemporarilySendKeys(SendCtrlCToActiveApp);
-
-        if (!isDoublePress)
-            return;
-
         Dispatcher.BeginInvoke(async () =>
         {
+            await Task.Delay(120);
+            TemporarilySendKeys(SendCtrlCToActiveApp);
             await Task.Delay(200);
             AddCurrentClipboardToList();
         });
     }
 
-    private void HandlePasteHotkey()
+    private void HandlePasteAllHotkey()
     {
-        DateTime now = DateTime.Now;
-        bool isDoublePress = now - _lastPastePress <= _doublePressWindow;
-        _lastPastePress = now;
-
-        if (!isDoublePress)
-        {
-            TemporarilySendKeys(SendCtrlVToActiveApp);
-            return;
-        }
-
         if (!PutAllItemsOnClipboard())
             return;
 
         Dispatcher.BeginInvoke(async () =>
         {
-            await Task.Delay(80);
+            await Task.Delay(120);
             TemporarilySendKeys(SendCtrlVToActiveApp);
         });
     }
@@ -119,17 +97,28 @@ public partial class MainWindow : Window
     private void TemporarilySendKeys(Action sendKeys)
     {
         IntPtr handle = new WindowInteropHelper(this).Handle;
-        NativeMethods.UnregisterHotKey(handle, CopyHotkeyId);
-        NativeMethods.UnregisterHotKey(handle, PasteHotkeyId);
+        UnregisterAppHotkeys(handle);
 
         sendKeys();
 
         Dispatcher.BeginInvoke(async () =>
         {
             await Task.Delay(120);
-            NativeMethods.RegisterHotKey(handle, CopyHotkeyId, NativeMethods.MOD_CONTROL, NativeMethods.KEY_C);
-            NativeMethods.RegisterHotKey(handle, PasteHotkeyId, NativeMethods.MOD_CONTROL, NativeMethods.KEY_V);
+            RegisterAppHotkeys(handle);
         });
+    }
+
+    private static void RegisterAppHotkeys(IntPtr handle)
+    {
+        const uint ctrlAlt = NativeMethods.MOD_CONTROL | NativeMethods.MOD_ALT;
+        RegisterHotkey(handle, CopyHotkeyId, ctrlAlt, NativeMethods.KEY_C);
+        RegisterHotkey(handle, PasteAllHotkeyId, ctrlAlt, NativeMethods.KEY_V);
+    }
+
+    private static void UnregisterAppHotkeys(IntPtr handle)
+    {
+        NativeMethods.UnregisterHotKey(handle, CopyHotkeyId);
+        NativeMethods.UnregisterHotKey(handle, PasteAllHotkeyId);
     }
 
     private void AddCurrentClipboardToList()
@@ -363,6 +352,7 @@ public partial class MainWindow : Window
 
     private static void SendCtrlCToActiveApp()
     {
+        ReleaseHotkeyModifiers();
         NativeMethods.keybd_event(NativeMethods.VK_CONTROL, 0, 0, UIntPtr.Zero);
         NativeMethods.keybd_event(NativeMethods.VK_C, 0, 0, UIntPtr.Zero);
         NativeMethods.keybd_event(NativeMethods.VK_C, 0, NativeMethods.KEYEVENTF_KEYUP, UIntPtr.Zero);
@@ -371,9 +361,16 @@ public partial class MainWindow : Window
 
     private static void SendCtrlVToActiveApp()
     {
+        ReleaseHotkeyModifiers();
         NativeMethods.keybd_event(NativeMethods.VK_CONTROL, 0, 0, UIntPtr.Zero);
         NativeMethods.keybd_event(NativeMethods.VK_V, 0, 0, UIntPtr.Zero);
         NativeMethods.keybd_event(NativeMethods.VK_V, 0, NativeMethods.KEYEVENTF_KEYUP, UIntPtr.Zero);
+        NativeMethods.keybd_event(NativeMethods.VK_CONTROL, 0, NativeMethods.KEYEVENTF_KEYUP, UIntPtr.Zero);
+    }
+
+    private static void ReleaseHotkeyModifiers()
+    {
+        NativeMethods.keybd_event(NativeMethods.VK_MENU, 0, NativeMethods.KEYEVENTF_KEYUP, UIntPtr.Zero);
         NativeMethods.keybd_event(NativeMethods.VK_CONTROL, 0, NativeMethods.KEYEVENTF_KEYUP, UIntPtr.Zero);
     }
 }

@@ -31,11 +31,11 @@
   ],
   "commands": {
     "copy-plus-plus-save": {
-      "suggested_key": { "default": "Ctrl+Shift+C" },
+      "suggested_key": { "default": "Ctrl+Shift+X" },
       "description": "Save selected text to copy++"
     },
     "copy-plus-plus-paste": {
-      "suggested_key": { "default": "Ctrl+Shift+V" },
+      "suggested_key": { "default": "Ctrl+Shift+Y" },
       "description": "Paste all copy++ items"
     }
   }

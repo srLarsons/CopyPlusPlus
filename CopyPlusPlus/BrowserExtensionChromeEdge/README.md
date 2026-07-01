@@ -7,8 +7,8 @@ This adds **copy++** to the browser right-click menu.
 - Right-click selected text → **copy++ - Save selected text**
 - Right-click an image → **copy++ - Save image URL**
 - Right-click inside a browser text field → **copy++ - Paste all saved items**
-- **Ctrl+Shift+C** saves selected browser text
-- **Ctrl+Shift+V** pastes all saved browser items
+- **Ctrl+Alt+C** saves selected browser text
+- **Ctrl+Alt+V** pastes all saved browser items
 
 ## Install in Chrome or Edge
 
