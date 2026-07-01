@@ -42,7 +42,7 @@ public partial class App : Application
         if (HasArg(e.Args, "--minimized"))
             _window.WindowState = WindowState.Minimized;
 
-        _window.Show();
+        //_window.Show();
     }
 
     protected override void OnExit(ExitEventArgs e)

@@ -31,9 +31,18 @@ function createMenu(properties) {
   });
 }
 
+function isMissingMenuItemError(message) {
+  return /Cannot find menu item with id/i.test(message || "");
+}
+
 function removeMenu(id) {
   return new Promise((resolve) => {
     chrome.contextMenus.remove(id, () => {
+      const message = chrome.runtime.lastError?.message;
+      if (message && !isMissingMenuItemError(message)) {
+        console.warn(message);
+      }
+
       resolve();
     });
   });
